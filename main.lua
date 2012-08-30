@@ -1,99 +1,132 @@
 -- -----------------------------------------------------------------------------
-local tileSize = 32
+local ATL = require("AdvTiledLoader")
 
-local tilesDisplayW = 25
-local tilesDisplayH = 19
+-- -----------------------------------------------------------------------------
+local TILESIZE = 32
+local SCR_CENTER_X
+local SCR_CENTER_Y
+
+local tilesDisplayW = 26
+local tilesDisplayH = 20
 
 local chunkW = 32
 local chunkH = 32
 
-local tilesetImage
-local tilesetQuads = {}
-local chunkMap
+local player_offX = 0
+local player_offY = 0
 
-local mapX, mapY
+local player_tileX = 1
+local player_tileY = 1
+
+local sel_tileX = 0
+local sel_tileY = 0
 
 -- -----------------------------------------------------------------------------
-function love.load()
-   mapX = 1.10
-   mapY = 1.10
-   image = love.graphics.newImage( "gfx/wizard.png" )
-   tilesetImage = love.graphics.newImage( "gfx/t_00.png" )
+function loadMap( name )
+   local map
+   
+   map = ATL.Loader.load("chunk01.tmx")
 
-   index = 0
-   for j = 0, (tilesetImage:getHeight() / tileSize) - 1 do
-      for i = 0, (tilesetImage:getWidth() / tileSize) - 1 do
-	 tilesetQuads[index] = love.graphics.newQuad(
-	    i * tileSize, j * tileSize, tileSize, tileSize,
-	    tilesetImage:getWidth(), tilesetImage:getHeight() )
-	 index = index + 1
-      end
+   if map.tl["collision"] then
+      map.tl["collision"].opacity = 0
    end
 
-   chunkMap = {}
-   for x = 0, chunkW - 1 do
-      chunkMap[x] = {}
-      for y = 0, chunkH - 1 do
-	 chunkMap[x][y] = math.random(0,16)
-      end
-   end
-
-   tilesetBatch = love.graphics.newSpriteBatch(
-      tilesetImage, tilesDisplayW * tilesDisplayH )
-
-   updateTilesetBatch()
+   return map
 end
 
 -- -----------------------------------------------------------------------------
-function updateTilesetBatch()
-   tilesetBatch:clear()
-   for x = 0, tilesDisplayW-1 do
-      for y = 0, tilesDisplayH-1 do
-	 index = chunkMap[x+math.floor(mapX)][y+math.floor(mapY)]
-	 tilesetBatch:addq(
-	    tilesetQuads[index], x*tileSize, y*tileSize )
-    end
-  end
+function love.load()
+   SCR_CENTER_X = love.graphics:getWidth()/2
+   SCR_CENTER_Y = love.graphics:getHeight()/2
+   image = love.graphics.newImage( "gfx/wizard.png" )
+
+
+   ATL.Loader.path = 'gfx/'
+   atlMap1 = loadMap("chunk01.tmx")
+   atlMap2 = loadMap("chunk02.tmx")
+   
 end
 
 -- -----------------------------------------------------------------------------
 function moveMap( dx, dy )
-   oldMapX = mapX
-   oldMapY = mapY
-   mapX = math.max(math.min(mapX + dx, chunkW - tilesDisplayW), 1)
-   mapY = math.max(math.min(mapY + dy, chunkH - tilesDisplayH), 1)
-   -- only update if we actually moved
-   neqX = math.floor(mapX) ~= math.floor(oldMapX)
-   neqY = math.floor(mapY) ~= math.floor(oldMapY)
-   if neqX or neqY then
-      updateTilesetBatch()
-   end
+   player_offX = player_offX + dx
+   player_offY = player_offY + dy
 end
 
 -- -----------------------------------------------------------------------------
 function love.update( dt )
+   local spd = 10
    if love.keyboard.isDown("up") then
-      moveMap( 0, -0.2 * tileSize * dt)
+      moveMap( 0, spd * TILESIZE * dt)
    end
    if love.keyboard.isDown("down") then
-      moveMap( 0, 0.2 * tileSize * dt)
+      moveMap( 0, - spd * TILESIZE * dt)
    end
    if love.keyboard.isDown("left") then
-      moveMap( -0.2 * tileSize * dt, 0)
+      moveMap( spd * TILESIZE * dt, 0)
    end
    if love.keyboard.isDown("right") then
-      moveMap( 0.2 * tileSize * dt, 0)
+      moveMap( - spd * TILESIZE * dt, 0)
    end
 end
 
 -- -----------------------------------------------------------------------------
 function love.draw()
-   offsetx = math.floor((mapX%1)*tileSize)
-   offsety = math.floor((mapY%1)*tileSize)
-   love.graphics.draw( tilesetBatch, offsetx, offsety )
+   love.graphics.setColor( 255, 255, 255 )
+   love.graphics.push()
+   love.graphics.translate( 
+      SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX, 
+      SCR_CENTER_Y - TILESIZE - 16 + player_offY - TILESIZE*player_tileY )
+   atlMap1:draw()
+   love.graphics.pop()
+
+--   love.graphics.push()
+--   love.graphics.translate(400-1024+mapX,300-1024+mapY)
+--   atlMap2:draw()
+--   love.graphics.pop()
+
    love.graphics.draw( image,
-		       love.graphics:getWidth()/2,
-		       love.graphics:getHeight()/2 )
+		       SCR_CENTER_X - image:getWidth()/2,
+		       SCR_CENTER_Y - image:getHeight() )
+
+   love.graphics.push()
+   love.graphics.setLine( 1, "rough" )
+   love.graphics.setColor( 0, 255, 0 )
+   love.graphics.translate( SCR_CENTER_X - 16 + player_offX - TILESIZE*player_tileX,
+			    SCR_CENTER_Y - 16 + player_offY - TILESIZE*player_tileY )
+   love.graphics.rectangle( "line", TILESIZE*player_tileX, TILESIZE*player_tileY, 
+			    TILESIZE, TILESIZE )
+   love.graphics.setColor( 0, 255, 0 )
+   love.graphics.rectangle( "line", TILESIZE * sel_tileX, TILESIZE * sel_tileY, 
+			    TILESIZE, TILESIZE )
+   love.graphics.pop()
+
+   love.graphics.setColor( 255, 0, 0 )
+   love.graphics.line( SCR_CENTER_X - 5, SCR_CENTER_Y, 
+		       SCR_CENTER_X + 5, SCR_CENTER_Y )
+   love.graphics.line( SCR_CENTER_X, SCR_CENTER_Y - 5, 
+		       SCR_CENTER_X, SCR_CENTER_Y + 5 )
+
+end
+
+-- -----------------------------------------------------------------------------
+function love.keyreleased( key )
+   if key == "escape" then
+      love.event.push( "quit" )
+   end
+   if key == "d" then
+      print( atlMap1:getDrawRange() )
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function love.mousereleased( x, y, button )
+   if button == "l" then
+      local_x = x - SCR_CENTER_X + 16 - player_offX
+      local_y = y - SCR_CENTER_Y + 16 - player_offY
+      sel_tileX = player_tileX + math.floor( local_x / 32 )
+      sel_tileY = player_tileY + math.floor( local_y / 32 )
+   end
 end
 
 -- -----------------------------------------------------------------------------
