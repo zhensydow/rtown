@@ -24,7 +24,7 @@ local sel_tileY = 0
 -- -----------------------------------------------------------------------------
 function loadMap( name )
    local map
-   
+
    map = ATL.Loader.load("chunk01.tmx")
 
    if map.tl["collision"] then
@@ -44,7 +44,7 @@ function love.load()
    ATL.Loader.path = 'gfx/'
    atlMap1 = loadMap("chunk01.tmx")
    atlMap2 = loadMap("chunk02.tmx")
-   
+
 end
 
 -- -----------------------------------------------------------------------------
@@ -74,8 +74,8 @@ end
 function love.draw()
    love.graphics.setColor( 255, 255, 255 )
    love.graphics.push()
-   love.graphics.translate( 
-      SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX, 
+   love.graphics.translate(
+      SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX,
       SCR_CENTER_Y - TILESIZE - 16 + player_offY - TILESIZE*player_tileY )
    atlMap1:draw()
    love.graphics.pop()
@@ -94,17 +94,17 @@ function love.draw()
    love.graphics.setColor( 0, 255, 0 )
    love.graphics.translate( SCR_CENTER_X - 16 + player_offX - TILESIZE*player_tileX,
 			    SCR_CENTER_Y - 16 + player_offY - TILESIZE*player_tileY )
-   love.graphics.rectangle( "line", TILESIZE*player_tileX, TILESIZE*player_tileY, 
+   love.graphics.rectangle( "line", TILESIZE*player_tileX, TILESIZE*player_tileY,
 			    TILESIZE, TILESIZE )
    love.graphics.setColor( 0, 255, 0 )
-   love.graphics.rectangle( "line", TILESIZE * sel_tileX, TILESIZE * sel_tileY, 
+   love.graphics.rectangle( "line", TILESIZE * sel_tileX, TILESIZE * sel_tileY,
 			    TILESIZE, TILESIZE )
    love.graphics.pop()
 
    love.graphics.setColor( 255, 0, 0 )
-   love.graphics.line( SCR_CENTER_X - 5, SCR_CENTER_Y, 
+   love.graphics.line( SCR_CENTER_X - 5, SCR_CENTER_Y,
 		       SCR_CENTER_X + 5, SCR_CENTER_Y )
-   love.graphics.line( SCR_CENTER_X, SCR_CENTER_Y - 5, 
+   love.graphics.line( SCR_CENTER_X, SCR_CENTER_Y - 5,
 		       SCR_CENTER_X, SCR_CENTER_Y + 5 )
 
 end
@@ -122,10 +122,10 @@ end
 -- -----------------------------------------------------------------------------
 function love.mousereleased( x, y, button )
    if button == "l" then
-      local_x = x - SCR_CENTER_X + 16 - player_offX
-      local_y = y - SCR_CENTER_Y + 16 - player_offY
-      sel_tileX = player_tileX + math.floor( local_x / 32 )
-      sel_tileY = player_tileY + math.floor( local_y / 32 )
+      local local_x = x - SCR_CENTER_X + 16 - player_offX
+      local local_y = y - SCR_CENTER_Y + 16 - player_offY
+      sel_tileX = player_tileX + math.floor( local_x / TILESIZE )
+      sel_tileY = player_tileY + math.floor( local_y / TILESIZE )
    end
 end
 
