@@ -26,34 +26,17 @@ local sel_tileY = 0
 local path = nil
 
 local m_player
-
-local m_subworld = {{nil,nil,nil},
-		    {nil,nil,nil},
-		    {nil,nil,nil}}
-
--- -----------------------------------------------------------------------------
-function loadMap( name )
-   local map
-
-   map = ATL.Loader.load("chunk01.tmx")
-
-   if map.tl["collision"] then
---      map.tl["collision"].opacity = 0
-   end
-
-   return map
-end
+local m_world
 
 -- -----------------------------------------------------------------------------
 function love.load()
    SCR_CENTER_X = love.graphics:getWidth()/2
    SCR_CENTER_Y = love.graphics:getHeight()/2
 
-
    ATL.Loader.path = 'gfx/'
-   m_subworld[2][2] = loadMap("chunk01.tmx")
 
    m_player = GAME.Player.new()
+   m_world = GAME.World.new()
 end
 
 -- -----------------------------------------------------------------------------
@@ -86,14 +69,8 @@ function love.draw()
    love.graphics.translate(
       SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX,
       SCR_CENTER_Y - TILESIZE - 16 + player_offY - TILESIZE*player_tileY )
-   m_subworld[2][2]:draw()
+   m_world:draw()
    love.graphics.pop()
-
---   love.graphics.push()
---   love.graphics.translate(400-1024+mapX,300-1024+mapY)
---   atlMap2:draw()
---   love.graphics.pop()
-
 
    love.graphics.push()
    love.graphics.translate( SCR_CENTER_X, SCR_CENTER_Y )
@@ -143,11 +120,11 @@ function love.mousereleased( x, y, button )
       local local_y = y - SCR_CENTER_Y + 16 - player_offY
       sel_tileX = player_tileX + math.floor( local_x / TILESIZE )
       sel_tileY = player_tileY + math.floor( local_y / TILESIZE )
-      blocked = m_subworld[2][2].tl["collision"].tileData(sel_tileX+1,sel_tileY+1)
+      blocked = m_world:isBlocked( sel_tileX, sel_tileY )
       if not blocked then
 	 print( sel_tileX, sel_tileY )
 	 path = UTIL.AStar:solve( { x=player_tileX, y=player_tileY},
-				  { x=sel_tileX, y=sel_tileY}, m_subworld )
+				  { x=sel_tileX, y=sel_tileY}, m_world )
       end
    end
 end

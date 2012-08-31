@@ -3,7 +3,7 @@ Player.__index = Player
 
 
 -- Returns a new Player
-function Player:new(map, name, opacity, prop)
+function Player:new()
    local player = {}
 
    -- Public:
