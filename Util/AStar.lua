@@ -1,6 +1,7 @@
 local AStar = {}
 
-function AStar:solve( start, goal )
+function AStar:solve( start, goal, world )
+   AStar.world = world
    local closedset = {}
    local openset = {start}
    local came_from = AStar.came_from
@@ -32,7 +33,7 @@ function AStar:solve( start, goal )
       table.remove( openset, i_current )
       table.insert( closedset, current )
 
-      for _, neigh in ipairs( neighbors( current ) ) do
+      for _, neigh in ipairs( AStar.neighbors( current ) ) do
          if not nodeInSet( neigh, closedset ) then
             local new_g_score = g_score[current.x][current.y] + 1
             if nodeInSet( neigh, openset ) then
@@ -84,23 +85,45 @@ function nodeInSet( node, set )
    return false
 end
 
-function neighbors( current )
+function AStar.neighbors( current )
    local nn = {}
 
    if current.x > -32 then
-      table.insert( nn, {x=current.x-1,y=current.y} )
+      if AStar.valid( current.x-1, current.y ) then
+	 table.insert( nn, {x=current.x-1,y=current.y} )
+      end
    end
    if current.x < 31 then
-      table.insert( nn, {x=current.x+1,y=current.y} )
+      if AStar.valid( current.x+1, current.y ) then
+	 table.insert( nn, {x=current.x+1,y=current.y} )
+      end
    end
    if current.y > -32 then
-      table.insert( nn, {x=current.x,y=current.y-1} )
+      if AStar.valid( current.x, current.y-1 ) then
+	 table.insert( nn, {x=current.x,y=current.y-1} )
+      end
    end
    if current.y < 31 then
-      table.insert( nn, {x=current.x,y=current.y+1} )
+      if AStar.valid( current.x, current.y+1 ) then
+	 table.insert( nn, {x=current.x,y=current.y+1} )
+      end
    end
 
    return nn
+end
+
+function AStar.valid( x, y )
+   local map = nil
+   
+   local mapi = math.floor((x + 32) / 32) + 1
+   local mapj = math.floor((y + 32) / 32) + 1
+
+   map = AStar.world[mapi][mapj]
+
+   if map then
+      return not map.tl["collision"].tileData(x+1,y+1)
+   end
+   return false
 end
 
 function AStar.reconstruct( current )
