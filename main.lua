@@ -1,5 +1,7 @@
 -- -----------------------------------------------------------------------------
 local ATL = require("AdvTiledLoader")
+local GAME = require("Gameplay")
+local UTIL = require("Util")
 
 -- -----------------------------------------------------------------------------
 local TILESIZE = 32
@@ -21,6 +23,14 @@ local player_tileY = 1
 local sel_tileX = 0
 local sel_tileY = 0
 
+local path = nil
+
+local m_player
+
+local m_subworld = {{nil,nil,nil},
+		    {nil,nil,nil},
+		    {nil,nil,nil}}
+
 -- -----------------------------------------------------------------------------
 function loadMap( name )
    local map
@@ -28,7 +38,7 @@ function loadMap( name )
    map = ATL.Loader.load("chunk01.tmx")
 
    if map.tl["collision"] then
-      map.tl["collision"].opacity = 0
+--      map.tl["collision"].opacity = 0
    end
 
    return map
@@ -38,13 +48,12 @@ end
 function love.load()
    SCR_CENTER_X = love.graphics:getWidth()/2
    SCR_CENTER_Y = love.graphics:getHeight()/2
-   image = love.graphics.newImage( "gfx/wizard.png" )
 
 
    ATL.Loader.path = 'gfx/'
-   atlMap1 = loadMap("chunk01.tmx")
-   atlMap2 = loadMap("chunk02.tmx")
+   m_subworld[2][2] = loadMap("chunk01.tmx")
 
+   m_player = GAME.Player.new()
 end
 
 -- -----------------------------------------------------------------------------
@@ -77,7 +86,7 @@ function love.draw()
    love.graphics.translate(
       SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX,
       SCR_CENTER_Y - TILESIZE - 16 + player_offY - TILESIZE*player_tileY )
-   atlMap1:draw()
+   m_subworld[2][2]:draw()
    love.graphics.pop()
 
 --   love.graphics.push()
@@ -85,19 +94,27 @@ function love.draw()
 --   atlMap2:draw()
 --   love.graphics.pop()
 
-   love.graphics.draw( image,
-		       SCR_CENTER_X - image:getWidth()/2,
-		       SCR_CENTER_Y - image:getHeight() )
+
+   love.graphics.push()
+   love.graphics.translate( SCR_CENTER_X, SCR_CENTER_Y )
+   m_player:draw()
+   love.graphics.pop()
 
    love.graphics.push()
    love.graphics.setLine( 1, "rough" )
-   love.graphics.setColor( 0, 255, 0 )
    love.graphics.translate( SCR_CENTER_X - 16 + player_offX - TILESIZE*player_tileX,
 			    SCR_CENTER_Y - 16 + player_offY - TILESIZE*player_tileY )
+   love.graphics.setColor( 0, 255, 255 )
+   if path then
+      for i,k in pairs( path ) do
+	 love.graphics.rectangle( "line", TILESIZE*k.x, TILESIZE*k.y,
+				  TILESIZE, TILESIZE )
+      end
+   end
+   love.graphics.setColor( 0, 255, 0 )
    love.graphics.rectangle( "line", TILESIZE*player_tileX, TILESIZE*player_tileY,
 			    TILESIZE, TILESIZE )
-   love.graphics.setColor( 0, 255, 0 )
-   love.graphics.rectangle( "line", TILESIZE * sel_tileX, TILESIZE * sel_tileY,
+   love.graphics.rectangle( "line", TILESIZE*sel_tileX, TILESIZE*sel_tileY,
 			    TILESIZE, TILESIZE )
    love.graphics.pop()
 
@@ -115,7 +132,7 @@ function love.keyreleased( key )
       love.event.push( "quit" )
    end
    if key == "d" then
-      print( atlMap1:getDrawRange() )
+      -- print( atlMap1:getDrawRange() )
    end
 end
 
@@ -126,6 +143,12 @@ function love.mousereleased( x, y, button )
       local local_y = y - SCR_CENTER_Y + 16 - player_offY
       sel_tileX = player_tileX + math.floor( local_x / TILESIZE )
       sel_tileY = player_tileY + math.floor( local_y / TILESIZE )
+      blocked = m_subworld[2][2].tl["collision"].tileData(sel_tileX+1,sel_tileY+1)
+      if not blocked then
+	 print( sel_tileX, sel_tileY )
+	 path = UTIL.AStar:solve( { x=player_tileX, y=player_tileY},
+				  { x=sel_tileX, y=sel_tileY}, m_subworld )
+      end
    end
 end
 
