@@ -35,8 +35,8 @@ function love.load()
 
    ATL.Loader.path = 'gfx/'
 
-   m_player = GAME.Player.new()
    m_world = GAME.World.new()
+   m_player = GAME.Player:new( m_world )
 end
 
 -- -----------------------------------------------------------------------------
@@ -73,11 +73,6 @@ function love.draw()
    love.graphics.pop()
 
    love.graphics.push()
-   love.graphics.translate( SCR_CENTER_X, SCR_CENTER_Y )
-   m_player:draw()
-   love.graphics.pop()
-
-   love.graphics.push()
    love.graphics.setLine( 1, "rough" )
    love.graphics.translate( SCR_CENTER_X - 16 + player_offX - TILESIZE*player_tileX,
 			    SCR_CENTER_Y - 16 + player_offY - TILESIZE*player_tileY )
@@ -110,6 +105,18 @@ function love.keyreleased( key )
    end
    if key == "d" then
       -- print( atlMap1:getDrawRange() )
+   end
+   if key == "a" then
+      m_player:updateAnim( "left" )
+   end
+   if key == "w" then
+      m_player:updateAnim( "up" )
+   end
+   if key == "s" then
+      m_player:updateAnim( "down" )
+   end
+   if key == "d" then
+      m_player:updateAnim( "right" )
    end
 end
 
