@@ -3,6 +3,12 @@ local Player = {}
 Player.__index = Player
 
 -- -----------------------------------------------------------------------------
+-- Define path so lua knows where to look for files.
+GAMEPLAY_LOADER_PATH = GAMEPLAY_LOADER_PATH or ({...})[1]:gsub("[%.\\/][Pp]layer$", "") .. '.'
+
+local AnimManager = require(GAMEPLAY_LOADER_PATH .. "AnimManager")
+
+-- -----------------------------------------------------------------------------
 -- Returns a new Player
 function Player:new( world )
    local player = {}
@@ -31,7 +37,7 @@ function Player:new( world )
    player.brush.width = player.brush.image:getWidth()
    player.brush.height = player.brush.image:getHeight()
 
-   player:setStop( "up" )
+   player:setStop( "left" )
 
    player.brush.draw = function ()
 			  local brush = player.brush
@@ -41,19 +47,20 @@ function Player:new( world )
 			     brush.x, brush.y )
 		       end
 
+   player.brush:moveTo(0,0)
+
+   AnimManager.addEntity( player )
+
    return player
 end
 
 -- -----------------------------------------------------------------------------
-function Player:updateAnim( facing )
+function Player:updateAnim()
    local brush = self.brush
-   if facing ~= brush.facing then
-      brush.facing = facing
-      brush.anim = 0
-   else
+   if not brush.static then
       brush.anim = (brush.anim + 1) % 8
+      brush.sprite = brush.facing .. brush.anim
    end
-   brush.sprite = brush.facing .. brush.anim
 end
 
 -- -----------------------------------------------------------------------------
@@ -61,6 +68,15 @@ function Player:setStop( facing )
    self.brush.facing = facing
    self.brush.anim = 0
    self.brush.sprite = facing
+   self.brush.static = true
+end
+
+-- -----------------------------------------------------------------------------
+function Player:setMove( facing )
+   self.brush.facing = facing
+   self.brush.anim = 0
+   self.brush.sprite = self.brush.facing .. self.brush.anim
+   self.brush.static = false
 end
 
 -- -----------------------------------------------------------------------------

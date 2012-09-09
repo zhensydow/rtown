@@ -110,16 +110,16 @@ function love.keyreleased( key )
       -- print( atlMap1:getDrawRange() )
    end
    if key == "a" then
-      m_player:updateAnim( "left" )
+      m_player:setMove( "left" )
    end
    if key == "w" then
-      m_player:updateAnim( "up" )
+      m_player:setMove( "up" )
    end
    if key == "s" then
-      m_player:updateAnim( "down" )
+      m_player:setMove( "down" )
    end
    if key == "d" then
-      m_player:updateAnim( "right" )
+      m_player:setMove( "right" )
    end
 end
 
