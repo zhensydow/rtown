@@ -98,6 +98,7 @@ function love.draw()
    love.graphics.line( SCR_CENTER_X, SCR_CENTER_Y - 5,
 		       SCR_CENTER_X, SCR_CENTER_Y + 5 )
 
+   love.graphics.print("FPS "..tostring(love.timer.getFPS( )), 5, 5)
 end
 
 -- -----------------------------------------------------------------------------
