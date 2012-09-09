@@ -2,6 +2,7 @@
 local ATL = require("AdvTiledLoader")
 local GAME = require("Gameplay")
 local UTIL = require("Util")
+local AnimManager = GAME.AnimManager
 
 -- -----------------------------------------------------------------------------
 local TILESIZE = 32
@@ -60,6 +61,7 @@ function love.update( dt )
    if love.keyboard.isDown("right") then
       moveMap( - spd * TILESIZE * dt, 0)
    end
+   AnimManager.update( dt )
 end
 
 -- -----------------------------------------------------------------------------
