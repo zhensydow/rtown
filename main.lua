@@ -136,8 +136,9 @@ function love.mousereleased( x, y, button )
       blocked = m_world:isBlocked( sel_tileX, sel_tileY )
       if not blocked then
 	 print( sel_tileX, sel_tileY )
-	 path = UTIL.AStar:solve( { x=player_tileX, y=player_tileY},
+	 path = UTIL.AStar:solve( { x=m_player.tilex, y=m_player.tiley},
 				  { x=sel_tileX, y=sel_tileY}, m_world )
+	 m_player.path = path
       end
    end
 end

@@ -17,6 +17,7 @@ function Player:new( world )
    -- Public:
    player.offx = 0
    player.offy = 0
+   player.path = nil
 
    -- Private:
    player.brush = world:newObject( "Player", "Entity", 0, 0, 64, 64 )
@@ -106,6 +107,18 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:hasPath()
+   if self.path and #self.path > 0 then
+      local newTile = self.path[1]
+      print( self.tilex, self.tiley, "->", newTile.x, newTile.y )
+      table.remove(self.path, 1)
+      if newTile.x ~= self.tilex or newTile.y ~= self.tiley then
+	 local newoffx = -(newTile.x - self.tilex) * 32
+	 local newoffy = -(newTile.y - self.tiley) * 32
+	 self:setTile( newTile.x, newTile.y )
+	 self.offx = newoffx
+	 self.offy = newoffy
+      end
+   end
    return false
 end
 
@@ -140,6 +153,10 @@ end
 function Player:setTile( tx, ty )
    local x = tx * 32 + 16
    local y = tx * 32 - 8
+   self.tilex = tx
+   self.tiley = ty
+   self.offx = 0
+   self.offy = 0
    self.brush:moveTo( x, y )
 end
 
