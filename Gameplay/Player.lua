@@ -109,7 +109,6 @@ end
 function Player:hasPath()
    if self.path and #self.path > 0 then
       local newTile = self.path[1]
-      print( self.tilex, self.tiley, "->", newTile.x, newTile.y )
       table.remove(self.path, 1)
       if newTile.x ~= self.tilex or newTile.y ~= self.tiley then
 	 local newoffx = -(newTile.x - self.tilex) * 32
@@ -152,7 +151,7 @@ end
 -- -----------------------------------------------------------------------------
 function Player:setTile( tx, ty )
    local x = tx * 32 + 16
-   local y = tx * 32 - 8
+   local y = ty * 32 - 8
    self.tilex = tx
    self.tiley = ty
    self.offx = 0
