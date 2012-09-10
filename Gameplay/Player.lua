@@ -15,6 +15,8 @@ function Player:new( world )
    setmetatable(player, Player)
 
    -- Public:
+   player.offx = 0
+   player.offy = 0
 
    -- Private:
    player.brush = world:newObject( "Player", "Entity", 0, 0, 64, 64 )
@@ -44,11 +46,10 @@ function Player:new( world )
 			  love.graphics.drawq(
 			     brush.image,
 			     brush.quads[brush.sprite],
-			     brush.x, brush.y )
+			     brush.x + player.offx, brush.y + player.offy )
 		       end
 
-   player.brush:moveTo(0,0)
-
+   player:setTile( 1, 1 )
    AnimManager.addEntity( player )
 
    return player
@@ -58,9 +59,63 @@ end
 function Player:updateAnim()
    local brush = self.brush
    if not brush.static then
-      brush.anim = (brush.anim + 1) % 8
+      local nextAnim = brush.anim + 1
+      if (nextAnim >= 8) and (not brush.repeatAnim) then
+	 brush.static = true
+      else
+	 brush.anim = nextAnim % 8
+      end
+      
       brush.sprite = brush.facing .. brush.anim
    end
+end
+
+-- -----------------------------------------------------------------------------
+function Player:update( dt )
+   local mvAmount = dt * 48
+   while mvAmount > 0 do
+      if self:inTile() then
+	 if self:hasPath() then
+	    self:updateTile()
+	 else
+	    self:setStop( self.brush.facing )
+	    mvAmount = 0
+	 end
+      else
+	 local newfacing
+	 if math.abs( self.offx ) > math.abs( self.offy ) then
+	    newfacing = (self.offx < 0) and "right" or "left"
+	 else
+	    newfacing = (self.offy < 0) and "down" or "up"
+	 end
+	 if self.brush.static or newfacing ~= self.brush.facing then
+	    self:setMove( newfacing )
+	 end
+	 local moved = self:moveToTile( mvAmount )
+	 mvAmount = mvAmount - moved
+      end
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function Player:inTile()
+   local checkx = math.abs( self.offx ) < 0.001
+   local checky = math.abs( self.offy ) < 0.001
+   return checkx and checky
+end
+
+-- -----------------------------------------------------------------------------
+function Player:hasPath()
+   return false
+end
+
+-- -----------------------------------------------------------------------------
+function Player:moveToTile( amount )
+   local doff = math.sqrt(self.offx*self.offx + self.offy*self.offy)
+   local total = math.min( amount, doff )
+   self.offx = self.offx - (total * self.offx / doff)
+   self.offy = self.offy - (total * self.offy / doff)
+   return total
 end
 
 -- -----------------------------------------------------------------------------
@@ -69,6 +124,7 @@ function Player:setStop( facing )
    self.brush.anim = 0
    self.brush.sprite = facing
    self.brush.static = true
+   self.brush.repeatAnim = false
 end
 
 -- -----------------------------------------------------------------------------
@@ -77,6 +133,14 @@ function Player:setMove( facing )
    self.brush.anim = 0
    self.brush.sprite = self.brush.facing .. self.brush.anim
    self.brush.static = false
+   self.brush.repeatAnim = false
+end
+
+-- -----------------------------------------------------------------------------
+function Player:setTile( tx, ty )
+   local x = tx * 32 + 16
+   local y = tx * 32 - 8
+   self.brush:moveTo( x, y )
 end
 
 -- -----------------------------------------------------------------------------

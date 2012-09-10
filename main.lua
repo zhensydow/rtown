@@ -42,8 +42,10 @@ end
 
 -- -----------------------------------------------------------------------------
 function moveMap( dx, dy )
-   player_offX = player_offX + dx
-   player_offY = player_offY + dy
+   --player_offX = player_offX + dx
+   --player_offY = player_offY + dy
+   m_player.offx = m_player.offx + dx
+   m_player.offy = m_player.offy + dy
 end
 
 -- -----------------------------------------------------------------------------
@@ -62,6 +64,7 @@ function love.update( dt )
       moveMap( - spd * TILESIZE * dt, 0)
    end
    AnimManager.update( dt )
+   m_player:update( dt )
 end
 
 -- -----------------------------------------------------------------------------
