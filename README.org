@@ -5,9 +5,20 @@ the Löve Framework.
 
 Robot Town is intended to be an 2D RPG.
 
-** Acknowledge and Licenses
+** Brief Manual
+ + Install Löve (https://love2d.org/)
+ + Download/Clone rtown
+ + Execute inside rtown folder:
+#+BEGIN_EXAMPLE
+love .
+#+END_EXAMPLE
 
-*** GFX: http://lpc.opengameart.org/
+** Acknowledge and Licenses
+*** Libraries:
+ + https://github.com/Kadoba/Advanced-Tiled-Loader
+
+*** GFX: 
+ + http://lpc.opengameart.org/
 
 *** Licenses:
  + GPLv3 http://www.gnu.org/licenses/gpl.txt
