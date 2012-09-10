@@ -66,7 +66,7 @@ function Player:updateAnim()
       else
 	 brush.anim = nextAnim % 8
       end
-      
+
       brush.sprite = brush.facing .. brush.anim
    end
 end

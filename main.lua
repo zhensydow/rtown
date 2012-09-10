@@ -9,22 +9,8 @@ local TILESIZE = 32
 local SCR_CENTER_X
 local SCR_CENTER_Y
 
-local tilesDisplayW = 26
-local tilesDisplayH = 20
-
-local chunkW = 32
-local chunkH = 32
-
-local player_offX = 0
-local player_offY = 0
-
-local player_tileX = 1
-local player_tileY = 1
-
 local sel_tileX = 0
 local sel_tileY = 0
-
-local path = nil
 
 local m_player
 local m_world
@@ -41,28 +27,7 @@ function love.load()
 end
 
 -- -----------------------------------------------------------------------------
-function moveMap( dx, dy )
-   --player_offX = player_offX + dx
-   --player_offY = player_offY + dy
-   m_player.offx = m_player.offx + dx
-   m_player.offy = m_player.offy + dy
-end
-
--- -----------------------------------------------------------------------------
 function love.update( dt )
-   local spd = 10
-   if love.keyboard.isDown("up") then
-      moveMap( 0, spd * TILESIZE * dt)
-   end
-   if love.keyboard.isDown("down") then
-      moveMap( 0, - spd * TILESIZE * dt)
-   end
-   if love.keyboard.isDown("left") then
-      moveMap( spd * TILESIZE * dt, 0)
-   end
-   if love.keyboard.isDown("right") then
-      moveMap( - spd * TILESIZE * dt, 0)
-   end
    AnimManager.update( dt )
    m_player:update( dt )
 end
@@ -72,27 +37,30 @@ function love.draw()
    love.graphics.setColor( 255, 255, 255 )
    love.graphics.push()
    love.graphics.translate(
-      SCR_CENTER_X - TILESIZE - 16 + player_offX - TILESIZE*player_tileX,
-      SCR_CENTER_Y - TILESIZE - 16 + player_offY - TILESIZE*player_tileY )
+      SCR_CENTER_X - TILESIZE - 16 - m_player.offx - TILESIZE*m_player.tilex,
+      SCR_CENTER_Y - TILESIZE - 16 - m_player.offy - TILESIZE*m_player.tiley )
    m_world:draw()
    love.graphics.pop()
 
    love.graphics.push()
    love.graphics.setLine( 1, "rough" )
-   love.graphics.translate( SCR_CENTER_X - 16 + player_offX - TILESIZE*player_tileX,
-			    SCR_CENTER_Y - 16 + player_offY - TILESIZE*player_tileY )
+   love.graphics.translate(
+      SCR_CENTER_X - 16 - m_player.offx - TILESIZE*m_player.tilex,
+      SCR_CENTER_Y - 16 - m_player.offy - TILESIZE*m_player.tiley )
    love.graphics.setColor( 0, 255, 255 )
-   if path then
-      for i,k in pairs( path ) do
-	 love.graphics.rectangle( "line", TILESIZE*k.x, TILESIZE*k.y,
-				  TILESIZE, TILESIZE )
+   if m_player.path then
+      for i,k in pairs( m_player.path ) do
+	 love.graphics.rectangle(
+	    "line", TILESIZE*k.x, TILESIZE*k.y, TILESIZE, TILESIZE )
       end
    end
    love.graphics.setColor( 0, 255, 0 )
-   love.graphics.rectangle( "line", TILESIZE*player_tileX, TILESIZE*player_tileY,
-			    TILESIZE, TILESIZE )
-   love.graphics.rectangle( "line", TILESIZE*sel_tileX, TILESIZE*sel_tileY,
-			    TILESIZE, TILESIZE )
+   love.graphics.rectangle(
+      "line", TILESIZE*m_player.tilex, TILESIZE*m_player.tiley,
+      TILESIZE, TILESIZE )
+   love.graphics.rectangle(
+      "line", TILESIZE*sel_tileX, TILESIZE*sel_tileY,
+      TILESIZE, TILESIZE )
    love.graphics.pop()
 
    love.graphics.setColor( 255, 0, 0 )
@@ -109,36 +77,24 @@ function love.keyreleased( key )
    if key == "escape" then
       love.event.push( "quit" )
    end
+   -- Out debug info
    if key == "d" then
       -- print( atlMap1:getDrawRange() )
-   end
-   if key == "a" then
-      m_player:setMove( "left" )
-   end
-   if key == "w" then
-      m_player:setMove( "up" )
-   end
-   if key == "s" then
-      m_player:setMove( "down" )
-   end
-   if key == "d" then
-      m_player:setMove( "right" )
    end
 end
 
 -- -----------------------------------------------------------------------------
 function love.mousereleased( x, y, button )
    if button == "l" then
-      local local_x = x - SCR_CENTER_X + 16 - player_offX
-      local local_y = y - SCR_CENTER_Y + 16 - player_offY
-      sel_tileX = player_tileX + math.floor( local_x / TILESIZE )
-      sel_tileY = player_tileY + math.floor( local_y / TILESIZE )
+      local local_x = x - SCR_CENTER_X + 16 + m_player.offx
+      local local_y = y - SCR_CENTER_Y + 16 + m_player.offy
+      sel_tileX = m_player.tilex + math.floor( local_x / TILESIZE )
+      sel_tileY = m_player.tiley + math.floor( local_y / TILESIZE )
       blocked = m_world:isBlocked( sel_tileX, sel_tileY )
       if not blocked then
-	 print( sel_tileX, sel_tileY )
-	 path = UTIL.AStar:solve( { x=m_player.tilex, y=m_player.tiley},
-				  { x=sel_tileX, y=sel_tileY}, m_world )
-	 m_player.path = path
+	 m_player.path  = UTIL.AStar:solve(
+	    { x=m_player.tilex, y=m_player.tiley},
+	    { x=sel_tileX, y=sel_tileY}, m_world )
       end
    end
 end
