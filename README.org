@@ -9,5 +9,6 @@ Robot Town is intended to be an 2D RPG.
 
 *** GFX: http://lpc.opengameart.org/
 
+*** Licenses:
  + GPLv3 http://www.gnu.org/licenses/gpl.txt
  + CC-BY-SA 3.0  http://creativecommons.org/licenses/by-sa/3.0/
