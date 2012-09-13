@@ -40,15 +40,18 @@ end
 
 -- -----------------------------------------------------------------------------
 function World:isWalkable( x, y )
-   local map = nil
-
    local mapi = math.floor((x + 32) / 32) + 1
    local mapj = math.floor((y + 32) / 32) + 1
 
-   map = self.subworld[mapi][mapj]
+   local map = self.subworld[mapi][mapj]
 
    if map then
-      return not map.tl["collision"].tileData(x+1,y+1)
+      local collisionLayer = map.tl["collision"]
+      if collisionLayer then
+	 return not collisionLayer.tileData(x+1,y+1)
+      else
+	 return true
+      end
    end
 
    return false
@@ -58,7 +61,7 @@ end
 function World._loadMap( name )
    local map
 
-   map = ATL.Loader.load("chunk01.tmx")
+   map = ATL.Loader.load( name )
 
    if map.tl["collision"] then
 --      map.tl["collision"].opacity = 0
