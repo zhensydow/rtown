@@ -15,7 +15,7 @@ function World:new()
 		     {nil,nil,nil},
 		     {nil,nil,nil}}
 
-   world.subworld[2][2] = World._loadMap("chunk01.tmx")
+   world.subworld[2][2] = World._loadMap("chunk6464.tmx")
 
    -- Private:
 
