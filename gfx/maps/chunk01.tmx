@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="32" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="t_00.tsx"/>
+ <tileset firstgid="51" source="t_99.tsx"/>
+ <layer name="background" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzFl9sOgjAMhiegEUVh7/+yzguSZmm3dj1w8SeEhH5/DyswpZSmAD2KbkD3IK4F/yDu74Z8SSwP/qio2rT4mcH/Fs1AH2V9pPlb12uUnwP4O9JHjl/P+buavxUtQG9F7f+z/BLyLVXn7sGvzys8t1z+yA5s5XhyLPLveaP4K9L7EX5rz2Lz1ZNV/znszOBT89OTNO+aT8XBPFvq5C+OejZ6EbF/NsIDxed+S0g9YPXo5a/ZRRwvmvcJV5ocqGc96gJjS+J7eoE6BCxt3TzOgHWPqGuOd+m/lEePLWK2YkTNpUWOP8XvC3k=
+  </data>
+ </layer>
+ <layer name="collision" width="32" height="32" opacity="0.6">
+  <data encoding="base64" compression="zlib">
+   eJzt0jEKACAMBMH8Kf//m62EoN0dCTtgYZNVNAI/uaQxSTZL3X/tVX3F/bv57v94n8n1/s5+5e4DAABghwMqPwT8
+  </data>
+ </layer>
+ <objectgroup name="player" width="32" height="32"/>
+</map>

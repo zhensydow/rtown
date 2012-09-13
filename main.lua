@@ -20,7 +20,7 @@ function love.load()
    SCR_CENTER_X = love.graphics:getWidth()/2
    SCR_CENTER_Y = love.graphics:getHeight()/2
 
-   ATL.Loader.path = 'gfx/'
+   ATL.Loader.path = 'gfx/maps/'
 
    m_world = GAME.World.new()
    m_player = GAME.Player:new( m_world )
