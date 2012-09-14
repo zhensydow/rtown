@@ -62,7 +62,7 @@ function World:isWalkable( x, y )
    if map then
       local collisionLayer = map.tl["collision"]
       if collisionLayer then
-	 return not collisionLayer.tileData(x+1,y+1)
+	 return not collisionLayer.tileData(x,y)
       else
 	 return true
       end
