@@ -2,5 +2,6 @@ UTIL_PATH = UTIL_PATH or ({...})[1]:gsub("[%.\\/]init$", "") .. '.'
 
 -- Return the classes in a table
 return {
-   AStar = require(UTIL_PATH  .. "AStar")
+   AStar = require(UTIL_PATH .. "AStar"),
+   Debug = require(UTIL_PATH .. "Debug")
 }
