@@ -5,10 +5,17 @@ local ATL = require("AdvTiledLoader")
 local World = {}
 World.__index = World
 
+local TILESIZE = 32
+local SCR_CENTER_X
+local SCR_CENTER_Y
+
 -- -----------------------------------------------------------------------------
 -- Returns a new World
 function World:new()
    local world = {}
+
+   SCR_CENTER_X = love.graphics:getWidth()/2
+   SCR_CENTER_Y = love.graphics:getHeight()/2
 
    -- Public:
    world.subworld = {{nil,nil,nil},
@@ -30,7 +37,14 @@ end
 
 -- -----------------------------------------------------------------------------
 function World:draw()
+   local player = self.player
+   love.graphics.setColor( 255, 255, 255 )
+   love.graphics.push()
+   love.graphics.translate(
+      SCR_CENTER_X - 16 - player.offx - TILESIZE*player.tilex,
+      SCR_CENTER_Y - 16 - player.offy - TILESIZE*player.tiley )
    self.subworld[2][2]:draw()
+   love.graphics.pop()
 end
 
 -- -----------------------------------------------------------------------------

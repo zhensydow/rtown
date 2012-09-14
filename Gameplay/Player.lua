@@ -7,6 +7,9 @@ Player.__index = Player
 GAMEPLAY_LOADER_PATH = GAMEPLAY_LOADER_PATH or ({...})[1]:gsub("[%.\\/][Pp]layer$", "") .. '.'
 
 local AnimManager = require(GAMEPLAY_LOADER_PATH .. "AnimManager")
+local UTIL = require("Util")
+-- -----------------------------------------------------------------------------
+local TILESIZE = 32
 
 -- -----------------------------------------------------------------------------
 -- Returns a new Player
@@ -48,6 +51,21 @@ function Player:new( world )
 			     brush.image,
 			     brush.quads[brush.sprite],
 			     brush.x + player.offx, brush.y + player.offy )
+			  if UTIL.Debug.enabled and player.path then
+			     oldr, oldg, oldb, olda = love.graphics.getColor()
+			     love.graphics.setColor( 0, 255, 255 )
+			     for i,k in pairs( player.path ) do
+				love.graphics.rectangle(
+				   "line", TILESIZE*k.x, TILESIZE*k.y,
+				   TILESIZE, TILESIZE )
+			     end
+			     love.graphics.setColor( 0, 255, 0 )
+			     love.graphics.rectangle(
+				"line", TILESIZE*player.tilex,
+				TILESIZE*player.tiley,
+				TILESIZE, TILESIZE )
+			     love.graphics.setColor( oldr, oldg, oldb, olda )
+			  end
 		       end
 
    player:setTile( 0, 0 )

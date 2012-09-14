@@ -24,6 +24,7 @@ function love.load()
 
    m_world = GAME.World.new()
    m_player = GAME.Player:new( m_world )
+   m_world.player = m_player
 end
 
 -- -----------------------------------------------------------------------------
@@ -34,42 +35,25 @@ end
 
 -- -----------------------------------------------------------------------------
 function love.draw()
-   love.graphics.setColor( 255, 255, 255 )
-   love.graphics.push()
-   love.graphics.translate(
-      SCR_CENTER_X - TILESIZE - 16 - m_player.offx - TILESIZE*m_player.tilex,
-      SCR_CENTER_Y - TILESIZE - 16 - m_player.offy - TILESIZE*m_player.tiley )
    m_world:draw()
-   love.graphics.pop()
 
-   love.graphics.push()
-   love.graphics.setLine( 1, "rough" )
-   love.graphics.translate(
-      SCR_CENTER_X - 16 - m_player.offx - TILESIZE*m_player.tilex,
-      SCR_CENTER_Y - 16 - m_player.offy - TILESIZE*m_player.tiley )
-   love.graphics.setColor( 0, 255, 255 )
-   if m_player.path then
-      for i,k in pairs( m_player.path ) do
-	 love.graphics.rectangle(
-	    "line", TILESIZE*k.x, TILESIZE*k.y, TILESIZE, TILESIZE )
-      end
+
+   if UTIL.Debug.enabled then
+      love.graphics.push()
+      love.graphics.setLine( 1, "rough" )
+      love.graphics.translate(
+	 SCR_CENTER_X - 16 - m_player.offx - TILESIZE*m_player.tilex,
+	 SCR_CENTER_Y - 16 - m_player.offy - TILESIZE*m_player.tiley )
+      love.graphics.setColor( 50, 255, 50 )
+      love.graphics.rectangle(
+	 "line", TILESIZE*sel_tileX, TILESIZE*sel_tileY,
+	 TILESIZE, TILESIZE )
+      love.graphics.pop()
+
+      love.graphics.setColor( 255, 0, 0 )
+      UTIL.Debug.drawCross( SCR_CENTER_X, SCR_CENTER_Y )
+      love.graphics.print("FPS "..tostring(love.timer.getFPS( )), 5, 5)
    end
-   love.graphics.setColor( 0, 255, 0 )
-   love.graphics.rectangle(
-      "line", TILESIZE*m_player.tilex, TILESIZE*m_player.tiley,
-      TILESIZE, TILESIZE )
-   love.graphics.rectangle(
-      "line", TILESIZE*sel_tileX, TILESIZE*sel_tileY,
-      TILESIZE, TILESIZE )
-   love.graphics.pop()
-
-   love.graphics.setColor( 255, 0, 0 )
-   love.graphics.line( SCR_CENTER_X - 5, SCR_CENTER_Y,
-		       SCR_CENTER_X + 5, SCR_CENTER_Y )
-   love.graphics.line( SCR_CENTER_X, SCR_CENTER_Y - 5,
-		       SCR_CENTER_X, SCR_CENTER_Y + 5 )
-
-   love.graphics.print("FPS "..tostring(love.timer.getFPS( )), 5, 5)
 end
 
 -- -----------------------------------------------------------------------------
@@ -79,6 +63,7 @@ function love.keyreleased( key )
    end
    -- Out debug info
    if key == "d" then
+      UTIL.Debug.enabled = not UTIL.Debug.enabled
       -- print( atlMap1:getDrawRange() )
    end
 end
