@@ -301,30 +301,30 @@ end
 -- Process TileLayer from xml table
 function Loader._processTileLayer(t, map)
 
-	-- Do some checking
-	Loader._checkXML(t)
-	assert(t.label == "layer", "Loader._processTileLayer - Passed table is not a tileset")
+   -- Do some checking
+   Loader._checkXML(t)
+   assert(t.label == "layer", "Loader._processTileLayer - Passed table is not a tileset")
 
-	-- Process elements
-	local data, properties
-	for _, v in ipairs(t) do
-		Loader._checkXML(t)
+   -- Process elements
+   local data, properties
+   for _, v in ipairs(t) do
+      Loader._checkXML(t)
 
-		-- Process data
-		if v.label == "data" then
-			data = Loader._processTileLayerData(v)
-		end
+      -- Process data
+      if v.label == "data" then
+	 data = Loader._processTileLayerData(v)
+      end
 
-		-- Process TileLayer properties
-		if v.label == "properties" then
-			properties = Loader._processProperties(v)
-		end
-	end
+      -- Process TileLayer properties
+      if v.label == "properties" then
+	 properties = Loader._processProperties(v)
+      end
+   end
 
-	-- Return the new layer
-	local tl = TileLayer:new(map, t.xarg.name, t.xarg.opacity, properties)
-	tl:_populate(data)
-	return tl
+   -- Return the new layer
+   local tl = TileLayer:new(map, t.xarg.name, t.xarg.opacity, properties)
+   tl:_populate(data)
+   return tl
 end
 
 -- Process TileLayer data from xml table

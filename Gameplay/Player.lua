@@ -50,7 +50,7 @@ function Player:new( world )
 			     brush.x + player.offx, brush.y + player.offy )
 		       end
 
-   player:setTile( 1, 1 )
+   player:setTile( 0, 0 )
    AnimManager.addEntity( player )
 
    return player
@@ -150,8 +150,8 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:setTile( tx, ty )
-   local x = tx * 32 + 16
-   local y = ty * 32 - 8
+   local x = tx * 32 - 16
+   local y = ty * 32 - 40
    self.tilex = tx
    self.tiley = ty
    self.offx = 0
