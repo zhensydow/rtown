@@ -2,6 +2,12 @@
 local ATL = require("AdvTiledLoader")
 
 -- -----------------------------------------------------------------------------
+-- Define path so lua knows where to look for files.
+GAMEPLAY_LOADER_PATH = GAMEPLAY_LOADER_PATH or ({...})[1]:gsub("[%.\\/][Ww]orld$", "") .. '.'
+
+local UTIL = require("Util")
+
+-- -----------------------------------------------------------------------------
 local World = {}
 World.__index = World
 
@@ -114,13 +120,23 @@ function World:loadChunk( wtx, wty )
 end
 
 -- -----------------------------------------------------------------------------
-function World._loadMap( name )
-   local map
+function World:setCollisionVisible( val )
+   for j = 1,3 do
+      for i = 1,3 do
+	 local map = self.subworld[i][j]
+	 if map.tl["collision"] then
+	    map.tl["collision"].opacity = val and 1 or 0
+	 end
+      end
+   end
+end
 
-   map = ATL.Loader.load( name )
+-- -----------------------------------------------------------------------------
+function World._loadMap( name )
+   local map = ATL.Loader.load( name )
 
    if map.tl["collision"] then
---      map.tl["collision"].opacity = 0
+      map.tl["collision"].opacity = UTIL.Debug.layer[1] and 1 or 0
    end
 
    return map

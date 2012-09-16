@@ -66,6 +66,12 @@ function love.keyreleased( key )
       UTIL.Debug.enabled = not UTIL.Debug.enabled
       -- print( atlMap1:getDrawRange() )
    end
+   if love.keyboard.isDown( "lshift" ) then
+      if key == "1" then
+	 UTIL.Debug.layer[1] = not UTIL.Debug.layer[1]
+	 m_world:setCollisionVisible( UTIL.Debug.layer[1] )
+      end
+   end
 end
 
 -- -----------------------------------------------------------------------------

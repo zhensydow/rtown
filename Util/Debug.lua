@@ -4,6 +4,7 @@ Debug.__index = Debug
 
 -- -----------------------------------------------------------------------------
 Debug.enabled = false
+Debug.layer = {false,false,false,false,false,false}
 
 -- -----------------------------------------------------------------------------
 function Debug.drawCross( x, y )
