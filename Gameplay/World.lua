@@ -13,6 +13,7 @@ World.__index = World
 
 local TILESIZE = 32
 local CHUNKSIZE = 1024
+local CHUNKTILES = 32
 local SCR_WIDTH
 local SCR_HEIGHT
 local SCR_MID_WIDTH
@@ -54,8 +55,6 @@ end
 -- -----------------------------------------------------------------------------
 function World:draw()
    local player = self.player
-   local playerx = TILESIZE*player.tilex + player.offx
-   local playery = TILESIZE*player.tiley + player.offy
    love.graphics.setColor( 255, 255, 255 )
    love.graphics.push()
    love.graphics.translate(
@@ -67,8 +66,8 @@ function World:draw()
 	 if chunk then
 	    love.graphics.push()
 	    love.graphics.translate( CHUNKSIZE*i, CHUNKSIZE*j )
-	    local rx = player.tilex - (TILESIZE*(i-2))
-	    local ry = player.tiley - (TILESIZE*(j-2))
+	    local rx = player.tilex - (CHUNKTILES*(i-2))
+	    local ry = player.tiley - (CHUNKTILES*(j-2))
 	    chunk:setDrawRange(
 	       TILESIZE*rx + player.offx - SCR_MID_WIDTH,
 	       TILESIZE*ry + player.offy - SCR_MID_HEIGHT,
@@ -88,8 +87,8 @@ end
 
 -- -----------------------------------------------------------------------------
 function World:isWalkable( x, y )
-   local mapi = math.floor((x + TILESIZE) / TILESIZE) + 1
-   local mapj = math.floor((y + TILESIZE) / TILESIZE) + 1
+   local mapi = math.floor((x + CHUNKTILES) / CHUNKTILES) + 1
+   local mapj = math.floor((y + CHUNKTILES) / CHUNKTILES) + 1
 
    local mapr = self.subworld[mapi]
    local map = mapr and mapr[mapj] or nil
@@ -97,8 +96,8 @@ function World:isWalkable( x, y )
    if map then
       local collisionLayer = map.tl["collision"]
       if collisionLayer then
-	 local rx = x - (TILESIZE*(mapi-2))
-	 local ry = y - (TILESIZE*(mapj-2))
+	 local rx = x - (CHUNKTILES*(mapi-2))
+	 local ry = y - (CHUNKTILES*(mapj-2))
 	 return not collisionLayer.tileData(rx,ry)
       else
 	 return true
