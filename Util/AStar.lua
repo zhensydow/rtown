@@ -34,6 +34,10 @@ function AStar:solve( start, goal, world )
       table.remove( openset, i_current )
       table.insert( closedset, current )
 
+      if #closedset > 200 then
+	 return nil
+      end
+
       for _, neigh in ipairs( AStar.neighbors( current ) ) do
 	 if not AStar.nodeInSet( neigh, closedset ) then
 	    local new_g_score = g_score[current.x][current.y] + 1
