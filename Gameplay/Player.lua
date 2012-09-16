@@ -8,6 +8,7 @@ GAMEPLAY_LOADER_PATH = GAMEPLAY_LOADER_PATH or ({...})[1]:gsub("[%.\\/][Pp]layer
 
 local AnimManager = require(GAMEPLAY_LOADER_PATH .. "AnimManager")
 local UTIL = require("Util")
+
 -- -----------------------------------------------------------------------------
 local TILESIZE = 32
 
