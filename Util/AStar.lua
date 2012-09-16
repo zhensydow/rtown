@@ -64,7 +64,7 @@ end
 function AStar.emptyMap()
    local mm = {}
 
-   for i = -32, 31 do
+   for i = -32, 63 do
       mm[i] = {}
    end
 
@@ -102,7 +102,7 @@ function AStar.neighbors( current )
 	 table.insert( nn, {x=current.x-1,y=current.y} )
       end
    end
-   if current.x < 31 then
+   if current.x < 63 then
       if AStar.world:isWalkable( current.x+1, current.y ) then
 	 table.insert( nn, {x=current.x+1,y=current.y} )
       end
@@ -112,7 +112,7 @@ function AStar.neighbors( current )
 	 table.insert( nn, {x=current.x,y=current.y-1} )
       end
    end
-   if current.y < 31 then
+   if current.y < 63 then
       if AStar.world:isWalkable( current.x, current.y+1 ) then
 	 table.insert( nn, {x=current.x,y=current.y+1} )
       end
