@@ -4,12 +4,12 @@
  <tileset firstgid="51" source="t_99.tsx"/>
  <layer name="background" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzdlEEKwCAMBKMfKP7/s63QhSBI8GDG9iCyhiWbUaxmVp51vXtN1kRPr/tqrpatyd6aXzwaoKvLVQBNzS1NzS2tHBGXXfUxh85nOf9Wp/ln9xvrp91Hdp3mH+nV97Lqj3LMfNE/9hU/zZ/20/xpP82ffh+n389uP82f9tP8aT/N/waujCLR
+   eJzFVu0OwjAIrL7A4leMX3Ou7/+OzmQklxNGN1n9QRak9uCO0l5TStfRboNtB9sM1ozftf092PkPOeQRW76SQwNrdiv6e7Kecliy9wU0ZePaBPdlaNEAX7tC/6nUJdbReqlZW8s8iHae7+Hjeoy90jcX3Yy6xWf802CP0VpaL72Xk51vad3i3wFPMI/GetYdzwLqxXhc99K4xj/2hOjFfHMdS+NWn9TEt/q/Nv9cO/ZfFB7Hrbr5/EXxzXHsu6xo8ZlBfD9G43s9yLOrJv+aFlP7efhW/0mtOX3PJImxFhqfHv/sT509j4sI/CkM4QFzxLkUyb82g61e7APxs4Or3Yuf+7RdiX8rD9b+sBL+1F0ov8m7KEp/6+3hcVCyv5efVrPkg+8mtraQX08frbYTYfyi71x87O0IfUv474H7bub/I/XHuVbKXzT/tfG1vq7J/xs9jjV7
   </data>
  </layer>
  <layer name="collision" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+   eJztl1sKACAIBL2T979bvxFR2fqKFIQg2lmQUJmIuEvv4OHs7WHkeXuYsVAPvMkdH/WgwUc8aPFP7l/i3+hb/4XiFz8737I/SjSLr18LpMcVP4YfXf/f+cg7iY5kjtLke+5D2faPDPvXb3zrGWMVDf41Gho=
   </data>
  </layer>
  <objectgroup name="player" width="32" height="32"/>
