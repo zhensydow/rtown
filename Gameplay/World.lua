@@ -13,6 +13,7 @@ local SCR_CENTER_Y
 -- Returns a new World
 function World:new()
    local world = {}
+   setmetatable(world, World)
 
    SCR_CENTER_X = love.graphics:getWidth()/2
    SCR_CENTER_Y = love.graphics:getHeight()/2
@@ -22,11 +23,11 @@ function World:new()
 		     {nil,nil,nil},
 		     {nil,nil,nil}}
 
-   world.subworld[2][2] = World._loadMap("chunk6464.tmx")
+   world:loadChunk( 100, 100 )
 
    -- Private:
 
-   return setmetatable(world, World)
+   return world
 end
 
 -- -----------------------------------------------------------------------------
@@ -41,9 +42,18 @@ function World:draw()
    love.graphics.setColor( 255, 255, 255 )
    love.graphics.push()
    love.graphics.translate(
-      SCR_CENTER_X - 16 - player.offx - TILESIZE*player.tilex,
-      SCR_CENTER_Y - 16 - player.offy - TILESIZE*player.tiley )
-   self.subworld[2][2]:draw()
+      SCR_CENTER_X - 16 - 1024 - player.offx - TILESIZE*player.tilex,
+      SCR_CENTER_Y - 16 - 1024 - player.offy - TILESIZE*player.tiley )
+   for j = 1,3 do
+      for i = 1,3 do
+	 if self.subworld[i][j] then
+	    love.graphics.push()
+	    love.graphics.translate( 1024*(i-1), 1024*(j-1) )
+	    self.subworld[i][j]:draw()
+	    love.graphics.pop()
+	 end
+      end
+   end
    love.graphics.pop()
 end
 
@@ -57,7 +67,8 @@ function World:isWalkable( x, y )
    local mapi = math.floor((x + 32) / 32) + 1
    local mapj = math.floor((y + 32) / 32) + 1
 
-   local map = self.subworld[mapi][mapj]
+   local mapr = self.subworld[mapi]
+   local map = mapr and mapr[mapj] or nil
 
    if map then
       local collisionLayer = map.tl["collision"]
@@ -69,6 +80,17 @@ function World:isWalkable( x, y )
    end
 
    return false
+end
+
+-- -----------------------------------------------------------------------------
+function World:loadChunk( wtx, wty )
+   for j = 1,3 do
+      for i = 1,3 do
+	 local filename = string.format(
+	    "chunk%02X%02X.tmx",  wtx + i - 2, wty + j - 2)
+	 self.subworld[i][j] = World._loadMap( filename )
+      end
+   end
 end
 
 -- -----------------------------------------------------------------------------
