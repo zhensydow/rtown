@@ -92,11 +92,22 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:update( dt )
-   local mvAmount = dt * 48
+   local mvAmount = dt * 64
    while mvAmount > 0 do
       if self:inTile() then
 	 if self:hasPath() then
-	    self:updateTile()
+	    local newTile = self.path[1]
+	    table.remove(self.path, 1)
+	    if newTile.x ~= self.tilex or newTile.y ~= self.tiley then
+	       local newoffx = -(newTile.x - self.tilex) * 32
+	       local newoffy = -(newTile.y - self.tiley) * 32
+	       self:setTile( newTile.x, newTile.y )
+	       self.offx = newoffx
+	       self.offy = newoffy
+	       if newTile.x < 0 or newTile.x > 31 or
+		  newTile.y < 0 or newTile.y > 31 then
+	       end
+	    end
 	 else
 	    self:setStop( self.brush.facing )
 	    mvAmount = 0
@@ -126,18 +137,7 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:hasPath()
-   if self.path and #self.path > 0 then
-      local newTile = self.path[1]
-      table.remove(self.path, 1)
-      if newTile.x ~= self.tilex or newTile.y ~= self.tiley then
-	 local newoffx = -(newTile.x - self.tilex) * 32
-	 local newoffy = -(newTile.y - self.tiley) * 32
-	 self:setTile( newTile.x, newTile.y )
-	 self.offx = newoffx
-	 self.offy = newoffy
-      end
-   end
-   return false
+   return (self.path and #self.path > 0)
 end
 
 -- -----------------------------------------------------------------------------
