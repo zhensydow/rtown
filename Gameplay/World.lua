@@ -39,7 +39,7 @@ function World:new()
 		     {nil,nil,nil},
 		     {nil,nil,nil}}
 
-   world:loadChunk( 100, 100 )
+   world:loadChunks( 100, 100 )
 
    -- Private:
 
@@ -108,7 +108,43 @@ function World:isWalkable( x, y )
 end
 
 -- -----------------------------------------------------------------------------
-function World:loadChunk( wtx, wty )
+function World:moveLeft()
+   for j = 1,3 do
+      self.subworld[3][j] = self.subworld[2][j]
+      self.subworld[2][j] = self.subworld[1][j]
+      self.subworld[1][j] = nil
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function World:moveRight()
+   for j = 1,3 do
+      self.subworld[1][j] = self.subworld[2][j]
+      self.subworld[2][j] = self.subworld[3][j]
+      self.subworld[3][j] = nil
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function World:moveUp()
+   for i = 1,3 do
+      self.subworld[i][3] = self.subworld[i][2]
+      self.subworld[i][2] = self.subworld[i][1]
+      self.subworld[i][1] = nil
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function World:moveDown()
+   for i = 1,3 do
+      self.subworld[i][1] = self.subworld[i][2]
+      self.subworld[i][2] = self.subworld[i][3]
+      self.subworld[i][3] = nil
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function World:loadChunks( wtx, wty )
    for j = 1,3 do
       for i = 1,3 do
 	 local filename = string.format(
