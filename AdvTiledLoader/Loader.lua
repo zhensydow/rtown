@@ -67,6 +67,11 @@ function Loader.load(tofile)
 
 	-- If we made this this far then there wasn't a map tag
 	error("Loader.load - No map found in file " .. fullpath .. filename)
+     end
+
+function Loader.exists( tofile )
+   fullpath = Loader.path .. tofile
+   return love.filesystem.isFile( fullpath )
 end
 
 ----------------------------------------------------------------------------------------------------
