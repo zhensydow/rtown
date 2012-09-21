@@ -52,6 +52,14 @@ function Object:new(layer, name, type, x, y, width, height, gid, prop)
    return setmetatable(obj, Object)
 end
 
+-- Move to a new layer
+function Object:moveToLayer( layer )
+   self.layer:removeObject( self )
+   self.layer = layer
+   layer:insertObject( self )
+   self:updateDrawInfo()
+end
+
 -- Updates the draw information. Call this every time the object moves or changes size.
 function Object:updateDrawInfo()
    local di = self.drawInfo

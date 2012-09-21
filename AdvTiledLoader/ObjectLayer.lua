@@ -38,6 +38,27 @@ function ObjectLayer:newObject(name, type, x, y, width, height, gid, prop)
    return obj
 end
 
+-- Remove object from layer
+function ObjectLayer:removeObject( obj )
+   local index = nil
+   for k,v in ipairs( self.objects ) do
+      if v == obj then
+	 index = k
+      end
+   end
+
+   assert( index, "ObjectLayer:removeObject - object not in layer" )
+
+   if index then
+      table.remove( self.objects, index )
+   end
+end
+
+-- Insert object in layer
+function ObjectLayer:insertObject( obj )
+   self.objects[#self.objects+1] = obj
+end
+
 -- Sorting function for objects. We'll use this below in ObjectLayer:draw()
 local function drawSort(o1, o2)
    return o1.drawInfo.order < o2.drawInfo.order
