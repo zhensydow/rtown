@@ -4,8 +4,28 @@ Debug.__index = Debug
 
 -- -----------------------------------------------------------------------------
 Debug.enabled = false
-Debug.verbose = false
+Debug.info = false
+Debug.warning = false
 Debug.layer = {false,false,false,false,false,false}
+
+-- -----------------------------------------------------------------------------
+function Debug.printInfo( ... )
+   if Debug.info then
+      print( "INF: ", unpack( arg ) )
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function Debug.printWarning( ... )
+   if Debug.warning then
+      print( "WAR: ", unpack( arg ) )
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function Debug.printError( ... )
+   print( "ERR: ", unpack( arg ) )
+end
 
 -- -----------------------------------------------------------------------------
 function Debug.drawCross( x, y )

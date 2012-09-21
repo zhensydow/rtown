@@ -16,10 +16,13 @@ local m_player
 local m_world
 
 -- -----------------------------------------------------------------------------
-function love.load( args )
-   for k,v in ipairs( args ) do
+function love.load( vargs )
+   for k,v in ipairs( vargs ) do
       if v == "-v" then
-	 UTIL.Debug.verbose = true
+	 UTIL.Debug.warning = true
+      elseif string.find( v, "-vv" )then
+	 UTIL.Debug.warning = true
+	 UTIL.Debug.info = true
       elseif v == "-d" then
 	 UTIL.Debug.enabled = true
       end
