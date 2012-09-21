@@ -102,12 +102,34 @@ function Player:update( dt )
 	    if newTile.x ~= self.tilex or newTile.y ~= self.tiley then
 	       local newoffx = -(newTile.x - self.tilex) * 32
 	       local newoffy = -(newTile.y - self.tiley) * 32
+	       if newTile.x < 0 then
+		  local newLayer = self.world.subworld[1][2]
+		  self.brush:moveToLayer( newLayer.ol["player"] )
+		  self.world:moveLeft()
+		  self:fixPath( 32, 0 )
+		  newTile.x = 31
+	       elseif newTile.y < 0 then
+		  local newLayer = self.world.subworld[2][1]
+		  self.brush:moveToLayer( newLayer.ol["player"] )
+		  self.world:moveUp()
+		  self:fixPath( 0, 32 )
+		  newTile.y = 31
+	       elseif newTile.x > 31 then
+		  local newLayer = self.world.subworld[3][2]
+		  self.brush:moveToLayer( newLayer.ol["player"] )
+		  self.world:moveRight()
+		  self:fixPath( -32, 0 )
+		  newTile.x = 0
+	       elseif newTile.y > 31 then
+		  local newLayer = self.world.subworld[2][3]
+		  self.brush:moveToLayer( newLayer.ol["player"] )
+		  self.world:moveDown()
+		  self:fixPath( 0, -32 )
+		  newTile.y = 0
+	       end
 	       self:setTile( newTile.x, newTile.y )
 	       self.offx = newoffx
 	       self.offy = newoffy
-	       if newTile.x < 0 or newTile.x > 31 or
-		  newTile.y < 0 or newTile.y > 31 then
-	       end
 	    end
 	 else
 	    self:setStop( self.brush.facing )
@@ -139,6 +161,14 @@ end
 -- -----------------------------------------------------------------------------
 function Player:hasPath()
    return (self.path and #self.path > 0)
+end
+
+-- -----------------------------------------------------------------------------
+function Player:fixPath( offx, offy )
+   for _,k in pairs( self.path ) do
+      k.x = k.x + offx
+      k.y = k.y + offy
+   end
 end
 
 -- -----------------------------------------------------------------------------
