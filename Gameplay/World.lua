@@ -7,6 +7,9 @@ GAMEPLAY_LOADER_PATH = GAMEPLAY_LOADER_PATH or ({...})[1]:gsub("[%.\\/][Ww]orld$
 
 local UTIL = require("Util")
 
+local printInfo = UTIL.Debug.printInfo
+local printWarning = UTIL.Debug.printWarning
+
 -- -----------------------------------------------------------------------------
 local World = {}
 World.__index = World
@@ -14,6 +17,7 @@ World.__index = World
 local TILESIZE = 32
 local CHUNKSIZE = 1024
 local CHUNKTILES = 32
+local CHUNKNAME = "chunk%02X%02X.tmx"
 local SCR_WIDTH = love.graphics:getWidth()
 local SCR_HEIGHT = love.graphics:getHeight()
 local SCR_MID_WIDTH = SCR_WIDTH/2
@@ -32,6 +36,8 @@ function World:new()
 		     {nil,nil,nil},
 		     {nil,nil,nil}}
 
+   world.wtx = 100
+   world.wty = 100
    world:loadChunks( 100, 100 )
 
    -- Private:
@@ -102,49 +108,68 @@ end
 
 -- -----------------------------------------------------------------------------
 function World:moveLeft()
+   self.wtx = self.wtx - 1
    for j = 1,3 do
       self.subworld[3][j] = self.subworld[2][j]
       self.subworld[2][j] = self.subworld[1][j]
-      self.subworld[1][j] = nil
+      self.subworld[1][j] = self:loadChunk( self.wtx - 1, self.wty + j - 2 )
    end
+   printInfo( "world moved to: ", self.wtx, self.wty )
 end
 
 -- -----------------------------------------------------------------------------
 function World:moveRight()
+   self.wtx = self.wtx + 1
    for j = 1,3 do
       self.subworld[1][j] = self.subworld[2][j]
       self.subworld[2][j] = self.subworld[3][j]
-      self.subworld[3][j] = nil
+      self.subworld[3][j] = self:loadChunk( self.wtx + 1, self.wty + j - 2 )
    end
+   printInfo( "world moved to: ", self.wtx, self.wty )
 end
 
 -- -----------------------------------------------------------------------------
 function World:moveUp()
+   self.wty = self.wty - 1
    for i = 1,3 do
       self.subworld[i][3] = self.subworld[i][2]
       self.subworld[i][2] = self.subworld[i][1]
-      self.subworld[i][1] = nil
+      self.subworld[i][1] = self:loadChunk( self.wtx + i - 2, self.wty - 1 )
    end
+   printInfo( "world moved to: ", self.wtx, self.wty )
 end
 
 -- -----------------------------------------------------------------------------
 function World:moveDown()
+   self.wty = self.wty + 1
    for i = 1,3 do
       self.subworld[i][1] = self.subworld[i][2]
       self.subworld[i][2] = self.subworld[i][3]
-      self.subworld[i][3] = nil
+      self.subworld[i][3] = self:loadChunk( self.wtx + i - 2, self.wty + 1 )
    end
+   printInfo( "world moved to: ", self.wtx, self.wty )
 end
 
 -- -----------------------------------------------------------------------------
 function World:loadChunks( wtx, wty )
    for j = 1,3 do
       for i = 1,3 do
-	 local filename = string.format(
-	    "chunk%02X%02X.tmx",  wtx + i - 2, wty + j - 2)
-	 self.subworld[i][j] = World._loadMap( filename )
+	 self.subworld[i][j] = self:loadChunk( wtx + i - 2, wty + j - 2 )
       end
    end
+end
+
+-- -----------------------------------------------------------------------------
+function World:loadChunk( wtx, wty )
+   local filename = string.format( CHUNKNAME, wtx, wty)
+   local chunk = nil
+   if ATL.Loader.exists( filename ) then
+      chunk = World._loadMap( filename )
+      printInfo( filename, "loaded" )
+   else
+      printWarning( filename, "not found" )
+   end
+   return chunk
 end
 
 -- -----------------------------------------------------------------------------
