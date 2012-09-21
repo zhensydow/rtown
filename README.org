@@ -10,7 +10,11 @@ Robot Town is intended to be an 2D RPG.
  + Download/Clone rtown
  + Execute inside rtown folder:
 #+BEGIN_EXAMPLE
-love .
+usage: love . [-d] [-v[v]]
+
+ -d   show debug on game
+ -v   verbose output
+ -vv  more verbose output
 #+END_EXAMPLE
 
 ** Acknowledge and Licenses
