@@ -3,20 +3,31 @@
  <tileset firstgid="1" source="t_00.tsx"/>
  <tileset firstgid="51" source="t_99.tsx"/>
  <tileset firstgid="56" source="t_02.tsx"/>
- <layer name="background" width="32" height="32">
+ <tileset firstgid="106" source="t_03.tsx"/>
+ <layer name="background" width="32" height="32" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzdlEEKwCAMBKMfKP7/s63QhSBI8GDG9iCyhiWbUaxmVp51vXtN1kRPr/tqrpatyd6aXzwaoKvLVQBNzS1NzS2tHBGXXfUxh85nOf9Wp/ln9xvrp91Hdp3mH+nV97Lqj3LMfNE/9hU/zZ/20/xpP82ffh+n389uP82f9tP8aT/N/waujCLR
+   eJztzrENADAIwDA6wP8n04EfaCVbyp4IAAB4X93OlMsvAD9qVGAADg==
+  </data>
+ </layer>
+ <layer name="int" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0bENACAMA8HMS01aaGFrvEIkkCn+JNdfOAIAAPyqFefody2N/aFNY39p29h3//+yDwC46wBpDB5M
+  </data>
+ </layer>
+ <layer name="ext" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0ksKgDAMRdHY+oEKrk10F+5/Ac2gggQDTvIUfIEz6eTSkCQiiYiIiD7r6bCP6R/NH/qbWo2zb9/3wB14u4juWaPqmoF99oMsKt8ooP71nx5Ef1K9Ywb037gxRL8CCCUNeQ==
+  </data>
+ </layer>
+ <objectgroup name="player" width="32" height="32"/>
+ <layer name="ceil" width="32" height="32" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzSkOgEAQRNE5FmExhMUAEpCs978CZcZ0QgbThvyfPFOmQiAiInovk1mWhFVyh/9aTrkSbmn4d/nfZE84nP4HGT+aHP4LKY2Y3SuH/1Y6I2b33uGfiIj+1QOaGh4j
   </data>
  </layer>
  <layer name="collision" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
-  </data>
- </layer>
- <objectgroup name="player" width="32" height="32"/>
- <layer name="ceil" width="32" height="32">
-  <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+   eJzt0rEJADAIBEB3yv67ZQKLD8FC7sBOfIuvAgA6J5yN+cmP8ufzX3aTm13HJvoHwF8X/ykJkQ==
   </data>
  </layer>
 </map>
