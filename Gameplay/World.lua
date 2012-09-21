@@ -173,11 +173,36 @@ function World:loadChunk( wtx, wty )
 end
 
 -- -----------------------------------------------------------------------------
+function World:updateInOut( tx, ty )
+   local mapr = self.subworld[2]
+   local map = mapr and mapr[2] or nil
+   if map and tx >= 0 and tx <= 31 and ty >= 0 and ty <= 31 then
+      local intLayer = map.tl["int"]
+      local ceilLayer = map.tl["ceil"]
+      local extLayer = map.tl["ext"]
+      local inside = false
+      if intLayer then
+	 inside = nil ~= intLayer.tileData( tx, ty )
+      end
+
+      if intLayer then
+	 intLayer.opacity = inside and 1 or 0
+      end
+      if extLayer then
+	 extLayer.opacity = inside and 0 or 1
+      end
+      if ceilLayer then
+	 ceilLayer.opacity = inside and 0 or 1
+      end
+   end
+end
+
+-- -----------------------------------------------------------------------------
 function World:setCollisionVisible( val )
    for j = 1,3 do
       for i = 1,3 do
 	 local map = self.subworld[i][j]
-	 if map.tl["collision"] then
+	 if map and map.tl["collision"] then
 	    map.tl["collision"].opacity = val and 1 or 0
 	 end
       end
@@ -190,6 +215,10 @@ function World._loadMap( name )
 
    if map.tl["collision"] then
       map.tl["collision"].opacity = UTIL.Debug.layer[1] and 1 or 0
+   end
+
+   if map.tl["int"] then
+      map.tl["int"].opacity = 0
    end
 
    return map
