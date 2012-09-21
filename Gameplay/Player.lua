@@ -140,11 +140,18 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:draw()
+   love.graphics.push()
+   love.graphics.translate(
+      SCR_MID_WIDTH - TILESIZE/2 - TILESIZE*self.tilex - self.offx,
+      SCR_MID_HEIGHT - TILESIZE/2 - TILESIZE*self.tiley - self.offy )
+   if self.tilex == 31 or self.tiley == 31 then
+      local brush = self.brush
+      love.graphics.drawq(
+	 brush.image,
+	 brush.quads[brush.sprite],
+	 brush.x + self.offx, brush.y + self.offy )
+   end
    if UTIL.Debug.enabled and self.path then
-      love.graphics.push()
-      love.graphics.translate(
-	 SCR_MID_WIDTH - TILESIZE/2 - TILESIZE*self.tilex - self.offx,
-	 SCR_MID_HEIGHT - TILESIZE/2 - TILESIZE*self.tiley - self.offy )
 
       oldr, oldg, oldb, olda = love.graphics.getColor()
       love.graphics.setColor( 0, 255, 255 )
@@ -156,8 +163,8 @@ function Player:draw()
       love.graphics.rectangle(
 	 "line", TILESIZE*self.tilex, TILESIZE*self.tiley, TILESIZE, TILESIZE )
       love.graphics.setColor( oldr, oldg, oldb, olda )
-      love.graphics.pop()
    end
+   love.graphics.pop()
 end
 
 -- -----------------------------------------------------------------------------
