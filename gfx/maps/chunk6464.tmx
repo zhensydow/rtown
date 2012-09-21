@@ -6,7 +6,7 @@
  <tileset firstgid="106" source="t_02.tsx"/>
  <layer name="background" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJxjYmBgYBrFDM5IGJ86ARq6AWY2P4Xm8KOxKTVvFBMf3qOYMCY3D9Ey743G4eDEjVC6eRC4ZaRhYvIEITWj+WoUI2NalOGjaWz4YAEs8TlU45eW7ZXB6vahGlcjFQMAdHYK3Q==
+   eJxjYmBgYBrFDM5IGJ86ARq6AWY2P4Xm8KOxKTVvFBMf3qOYMCY3D9Ey743G4eDELVC6dRC4ZaRhYvIEITWj+WoUI2NalOGjaWz4YAEs8TlU45eW7ZXB6vahGlcjFQMAo0YK4g==
   </data>
  </layer>
  <objectgroup name="player" width="32" height="32"/>
@@ -15,7 +15,7 @@
    eJztzSkOACAAA0HeyxEMIIGnU4HFkdTsJJvKhgDgJaqusum/qaQG/7b/bvyfaqlt+i93q+kfAAAAfx3h+gkD
   </data>
  </layer>
- <layer name="collision" width="32" height="32">
+ <layer name="collision" width="32" height="32" visible="0">
   <data encoding="base64" compression="zlib">
    eJztzcEJAEAIA0F7sv/eDh+CXAk6AyHPjaDkGLT8Xl9f/04fAGCbB2uoA8o=
   </data>
