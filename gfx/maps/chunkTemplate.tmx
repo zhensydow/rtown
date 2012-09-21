@@ -7,10 +7,10 @@
    eJzdlEEKwCAMBKMfKP7/s63QhSBI8GDG9iCyhiWbUaxmVp51vXtN1kRPr/tqrpatyd6aXzwaoKvLVQBNzS1NzS2tHBGXXfUxh85nOf9Wp/ln9xvrp91Hdp3mH+nV97Lqj3LMfNE/9hU/zZ/20/xpP82ffh+n389uP82f9tP8aT/N/waujCLR
   </data>
  </layer>
+ <objectgroup name="player" width="32" height="32"/>
  <layer name="collision" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
   </data>
  </layer>
- <objectgroup name="player" width="32" height="32"/>
 </map>
