@@ -47,7 +47,7 @@ function World:new()
 end
 
 -- -----------------------------------------------------------------------------
-function World:newObject( name, type, x, y, w, h )
+function World:newPlayer( name, type, x, y, w, h )
    return self.subworld[2][2].ol["player"]:newObject(
       name, type, x, y, w, h )
 end

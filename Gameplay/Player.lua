@@ -24,7 +24,8 @@ function Player:new( world )
    player.path = nil
 
    -- Private:
-   player.brush = world:newObject( "Player", "Entity", 0, 0, 64, 64 )
+   player.world = world
+   player.brush = world:newPlayer( "Player", "Entity", 0, 0, 64, 64 )
    player.brush.quads = {
       up = love.graphics.newQuad(0,0,64,64,576,256),
       left = love.graphics.newQuad(0,64,64,64,576,256),
