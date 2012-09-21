@@ -57,7 +57,7 @@ function Player:new( world )
 			     brush.x + player.offx, brush.y + player.offy )
 		       end
 
-   player:setTile( 0, 0 )
+   player:setTile( 18, 18 )
    AnimManager.addEntity( player )
 
    return player
@@ -223,6 +223,7 @@ function Player:setTile( tx, ty )
    self.offx = 0
    self.offy = 0
    self.brush:moveTo( x, y )
+   self.world:updateInOut( tx, ty )
 end
 
 -- -----------------------------------------------------------------------------

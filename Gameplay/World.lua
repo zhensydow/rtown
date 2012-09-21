@@ -37,8 +37,8 @@ function World:new()
 		     {nil,nil,nil}}
 
    world.wtx = 100
-   world.wty = 100
-   world:loadChunks( 100, 100 )
+   world.wty = 99
+   world:loadChunks( world.wtx, world.wty )
 
    -- Private:
 
