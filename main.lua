@@ -16,7 +16,15 @@ local m_player
 local m_world
 
 -- -----------------------------------------------------------------------------
-function love.load()
+function love.load( args )
+   for k,v in ipairs( args ) do
+      if v == "-v" then
+	 UTIL.Debug.verbose = true
+      elseif v == "-d" then
+	 UTIL.Debug.enabled = true
+      end
+   end
+
    SCR_CENTER_X = love.graphics:getWidth()/2
    SCR_CENTER_Y = love.graphics:getHeight()/2
 

@@ -4,6 +4,7 @@ Debug.__index = Debug
 
 -- -----------------------------------------------------------------------------
 Debug.enabled = false
+Debug.verbose = false
 Debug.layer = {false,false,false,false,false,false}
 
 -- -----------------------------------------------------------------------------
