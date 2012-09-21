@@ -80,7 +80,7 @@ end
 
 -- -----------------------------------------------------------------------------
 function Player:update( dt )
-   local mvAmount = dt * 64
+   local mvAmount = dt * 96
    while mvAmount > 0 do
       if self:inTile() then
 	 if self:hasPath() then
