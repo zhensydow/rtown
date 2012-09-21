@@ -37,6 +37,8 @@ end
 function love.draw()
    m_world:draw()
 
+   -- overall draw
+   m_player:draw()
 
    if UTIL.Debug.enabled then
       love.graphics.push()

@@ -11,6 +11,8 @@ local UTIL = require("Util")
 
 -- -----------------------------------------------------------------------------
 local TILESIZE = 32
+local SCR_MID_WIDTH = love.graphics:getWidth()/2
+local SCR_MID_HEIGHT = love.graphics:getHeight()/2
 
 -- -----------------------------------------------------------------------------
 -- Returns a new Player
@@ -53,21 +55,6 @@ function Player:new( world )
 			     brush.image,
 			     brush.quads[brush.sprite],
 			     brush.x + player.offx, brush.y + player.offy )
-			  if UTIL.Debug.enabled and player.path then
-			     oldr, oldg, oldb, olda = love.graphics.getColor()
-			     love.graphics.setColor( 0, 255, 255 )
-			     for i,k in pairs( player.path ) do
-				love.graphics.rectangle(
-				   "line", TILESIZE*k.x, TILESIZE*k.y,
-				   TILESIZE, TILESIZE )
-			     end
-			     love.graphics.setColor( 0, 255, 0 )
-			     love.graphics.rectangle(
-				"line", TILESIZE*player.tilex,
-				TILESIZE*player.tiley,
-				TILESIZE, TILESIZE )
-			     love.graphics.setColor( oldr, oldg, oldb, olda )
-			  end
 		       end
 
    player:setTile( 0, 0 )
@@ -148,6 +135,28 @@ function Player:update( dt )
 	 local moved = self:moveToTile( mvAmount )
 	 mvAmount = mvAmount - moved
       end
+   end
+end
+
+-- -----------------------------------------------------------------------------
+function Player:draw()
+   if UTIL.Debug.enabled and self.path then
+      love.graphics.push()
+      love.graphics.translate(
+	 SCR_MID_WIDTH - TILESIZE/2 - TILESIZE*self.tilex - self.offx,
+	 SCR_MID_HEIGHT - TILESIZE/2 - TILESIZE*self.tiley - self.offy )
+
+      oldr, oldg, oldb, olda = love.graphics.getColor()
+      love.graphics.setColor( 0, 255, 255 )
+      for i,k in pairs( self.path ) do
+	 love.graphics.rectangle(
+	    "line", TILESIZE*k.x, TILESIZE*k.y, TILESIZE, TILESIZE )
+      end
+      love.graphics.setColor( 0, 255, 0 )
+      love.graphics.rectangle(
+	 "line", TILESIZE*self.tilex, TILESIZE*self.tiley, TILESIZE, TILESIZE )
+      love.graphics.setColor( oldr, oldg, oldb, olda )
+      love.graphics.pop()
    end
 end
 

@@ -14,25 +14,18 @@ World.__index = World
 local TILESIZE = 32
 local CHUNKSIZE = 1024
 local CHUNKTILES = 32
-local SCR_WIDTH
-local SCR_HEIGHT
-local SCR_MID_WIDTH
-local SCR_MID_HEIGHT
-local START_X
-local START_Y
+local SCR_WIDTH = love.graphics:getWidth()
+local SCR_HEIGHT = love.graphics:getHeight()
+local SCR_MID_WIDTH = SCR_WIDTH/2
+local SCR_MID_HEIGHT = SCR_HEIGHT/2
+local START_X = SCR_MID_WIDTH - TILESIZE/2 - 2*CHUNKSIZE
+local START_Y = SCR_MID_HEIGHT - TILESIZE/2 - 2*CHUNKSIZE
 
 -- -----------------------------------------------------------------------------
 -- Returns a new World
 function World:new()
    local world = {}
    setmetatable(world, World)
-
-   SCR_WIDTH = love.graphics:getWidth()
-   SCR_HEIGHT = love.graphics:getHeight()
-   SCR_MID_WIDTH = SCR_WIDTH/2
-   SCR_MID_HEIGHT = SCR_HEIGHT/2
-   START_X = SCR_MID_WIDTH - TILESIZE/2 - 2*CHUNKSIZE
-   START_Y = SCR_MID_HEIGHT - TILESIZE/2 - 2*CHUNKSIZE
 
    -- Public:
    world.subworld = {{nil,nil,nil},
