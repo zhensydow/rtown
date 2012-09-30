@@ -147,6 +147,32 @@ function AStar.printPath( path )
 end
 
 -- -----------------------------------------------------------------------------
+function AStar.smoothPath( path )
+   local i = 1
+   local deleted = {}
+   while i <= (#path - 2) do
+      local p0 = path[i]
+      local p1 = path[i+1]
+      local p2 = path[i+2]
+      if math.abs(p0.y - p2.y) == 1 and math.abs(p0.y - p2.y) == 1 then
+	 local vx = p2.x - p1.x
+	 local vy = p2.y - p1.y
+	 local p1bx = p0.x + vx
+	 local p1by = p0.y + vy
+	 if AStar.world:isWalkable( p1bx, p1by ) then
+	    table.insert(deleted, 1, i+1)
+	    i = i + 1
+	 end
+      end
+      i = i + 1
+   end
+   for k,v in ipairs(deleted) do
+      table.remove( path, v )
+   end
+   printInfo( "smooth path remove", #deleted, "nodes" )
+end
+
+-- -----------------------------------------------------------------------------
 AStar.g_score = AStar.emptyMap()
 AStar.f_score = AStar.emptyMap()
 AStar.came_from = AStar.emptyMap()

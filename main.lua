@@ -99,6 +99,7 @@ function love.mousereleased( x, y, button )
 	 m_player.path  = UTIL.AStar:solve(
 	    { x=m_player.tilex, y=m_player.tiley},
 	    { x=sel_tileX, y=sel_tileY}, m_world )
+	 UTIL.AStar.smoothPath( m_player.path )
       end
    end
 end
