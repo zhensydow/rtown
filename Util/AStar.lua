@@ -133,6 +133,13 @@ function AStar.reconstruct( current )
 end
 
 -- -----------------------------------------------------------------------------
+function AStar.printPath( path )
+   for k,v in ipairs( path ) do
+      print( k, v.x, v.y )
+   end
+end
+
+-- -----------------------------------------------------------------------------
 AStar.g_score = AStar.emptyMap()
 AStar.f_score = AStar.emptyMap()
 AStar.came_from = AStar.emptyMap()
