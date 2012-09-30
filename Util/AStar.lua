@@ -152,9 +152,9 @@ function AStar.smoothPath( path )
    local deleted = {}
    while i <= (#path - 2) do
       local p0 = path[i]
-      local p1 = path[i+1]
       local p2 = path[i+2]
       if math.abs(p0.y - p2.y) == 1 and math.abs(p0.y - p2.y) == 1 then
+	 local p1 = path[i+1]
 	 local vx = p2.x - p1.x
 	 local vy = p2.y - p1.y
 	 local p1bx = p0.x + vx
